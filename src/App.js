@@ -58,12 +58,20 @@ class App extends React.Component{
     this.setState({modalInsert:false});
   }
 
+  insert = () => {
+    var newValue={...this.state.form}
+    newValue.id=this.state.data.length + 1;
+    var list = this.state.data;
+    list.push(newValue);
+    this.setState({data:list, modalInsert:false});
+  }
+
   render(){
     return (
       <>
       <Container>
         <br/>
-        <Button color="success" onClick={this.showModal}>Nuevo Vehículo</Button>
+        <Button color="success" onClick={() => this.showModal()}>Nuevo Vehículo</Button>
         <br/>
         <br/>
         
@@ -156,8 +164,8 @@ class App extends React.Component{
         </ModalBody>
 
         <ModalFooter>
-          <Button color="primary">Insertar</Button>
-          <Button color="danger" onClick={this.closeModal}>Cancelar</Button>
+          <Button color="primary" onClick={() => this.insert()}>Insertar</Button>
+          <Button color="danger" onClick={() => this.closeModal()}>Cancelar</Button>
         </ModalFooter>
       </Modal>
       </>
