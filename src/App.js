@@ -93,6 +93,26 @@ class App extends React.Component{
     this.setState({data: list, modalEdit:false});
   }
 
+  delete = (data) => {
+    var option = window.confirm(data.status == "true" ? "Deseas inhabilitar el registro ":"Deseas habilitar el registro " + data.id);
+    if(option){
+      var count = 0;
+      var list = this.state.data;
+      list.map((regist) => {
+        if(regist.id == data.id){
+          //list.splice(count, 1);
+          if(regist.status == "true"){
+            regist.status = "false";
+          }else{
+            regist.status = "true";
+          }
+        }
+        count++;
+      });
+      this.setState({data: list}); 
+    }
+  }
+
   render(){
     return (
       <>
@@ -130,7 +150,7 @@ class App extends React.Component{
                 <th>{element.activeNumber}</th>
                 <th>
                   <Button color="primary" onClick={() => this.showModalEdit(element)}>Editar</Button>{'  '}
-                  <Button color="danger">Eliminar</Button>
+                  <Button color="danger" onClick={() => this.delete(element)}>Eliminar</Button>
                 </th>
               </tr>
             ))}
