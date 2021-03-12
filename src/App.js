@@ -27,7 +27,35 @@ const data = [
 class App extends React.Component{
 
   state={
-    data:data
+    data:data,
+    form:{
+      id:'',
+      carId:'',
+      idGps:'',
+      type:'',
+      speedLimit:'',
+      status:'',
+      photoUrl:'',
+      activeNumber:''
+    },
+    modalInsert: false,
+  }
+
+  handleChange=e=>{
+    this.setState({
+      form:{
+        ...this.state.form,
+        [e.target.name]: e.target.value,
+      }
+    });
+  }
+
+  showModal = () => {
+    this.setState({modalInsert:true});
+  }
+  
+  closeModal = () => {
+    this.setState({modalInsert:false});
   }
 
   render(){
@@ -35,7 +63,7 @@ class App extends React.Component{
       <>
       <Container>
         <br/>
-        <Button color="primary">Nuevo Vehículo</Button>
+        <Button color="success" onClick={this.showModal}>Nuevo Vehículo</Button>
         <br/>
         <br/>
         
@@ -46,7 +74,7 @@ class App extends React.Component{
               <th>Placa</th>
               <th>Id GPS</th>
               <th>Tipo</th>
-              <th>Velocidad limite</th>
+              <th>Velocidad límite</th>
               <th>Estado</th>
               <th>Url Foto</th>
               <th>Número de activo</th>
@@ -75,6 +103,63 @@ class App extends React.Component{
         </Table>
 
       </Container>
+
+      <Modal isOpen={this.state.modalInsert}>
+        <ModalHeader>
+          <div>
+            <h3>Insertar Registro</h3>
+          </div>
+        </ModalHeader>
+
+        <ModalBody>
+          
+          <FormGroup>
+            <label>Id:</label>
+            <input className="form-control" readOnly type="text" value={(this.state.data.length + 1)}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Placa:</label>
+            <input className="form-control" name="carId" type="text" onChange={this.handleChange}/>
+          </FormGroup>
+
+          <FormGroup>
+            <label>GPS:</label>
+            <input className="form-control" name="idGps" type="text" onChange={this.handleChange}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Tipo de Vehículo:</label>
+            <input className="form-control" name="type" type="text" onChange={this.handleChange}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Velocidad límite:</label>
+            <input className="form-control" name="speedLimit" type="text" onChange={this.handleChange}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Estado:</label>
+            <input className="form-control" name="status" type="text" onChange={this.handleChange}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Foto:</label>
+            <input className="form-control" name="photoUrl" type="text" onChange={this.handleChange}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Número de activo:</label>
+            <input className="form-control" name="activeNumber" type="text" onChange={this.handleChange}/>
+          </FormGroup>
+
+        </ModalBody>
+
+        <ModalFooter>
+          <Button color="primary">Insertar</Button>
+          <Button color="danger" onClick={this.closeModal}>Cancelar</Button>
+        </ModalFooter>
+      </Modal>
       </>
     );
   }
