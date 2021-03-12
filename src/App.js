@@ -39,6 +39,7 @@ class App extends React.Component{
       activeNumber:''
     },
     modalInsert: false,
+    modalEdit: false,
   }
 
   handleChange=e=>{
@@ -64,6 +65,32 @@ class App extends React.Component{
     var list = this.state.data;
     list.push(newValue);
     this.setState({data:list, modalInsert:false});
+  }
+
+  showModalEdit = (regist) => {
+    this.setState({modalEdit:true, form: regist});
+  }
+  
+  closeModalEdit = () => {
+    this.setState({modalEdit:false});
+  }
+
+  edit = (data) => {
+    var count = 0;
+    var list = this.state.data;
+    list.map((regist) => {
+      if(data.id == regist.id){
+        list[count].carId = data.carId;
+        list[count].idGps = data.idGps;
+        list[count].type = data.type;
+        list[count].speedLimit = data.speedLimit;
+        list[count].status = data.status;
+        list[count].photoUrl = data.photoUrl;
+        list[count].activeNumber = data.activeNumber;
+      }
+      count++;
+    });
+    this.setState({data: list, modalEdit:false});
   }
 
   render(){
@@ -102,7 +129,7 @@ class App extends React.Component{
                 <th>{element.photoUrl}</th>
                 <th>{element.activeNumber}</th>
                 <th>
-                  <Button color="primary">Editar</Button>{'  '}
+                  <Button color="primary" onClick={() => this.showModalEdit(element)}>Editar</Button>{'  '}
                   <Button color="danger">Eliminar</Button>
                 </th>
               </tr>
@@ -115,7 +142,7 @@ class App extends React.Component{
       <Modal isOpen={this.state.modalInsert}>
         <ModalHeader>
           <div>
-            <h3>Insertar Registro</h3>
+            <h3>Insertar Vehículo</h3>
           </div>
         </ModalHeader>
 
@@ -168,6 +195,66 @@ class App extends React.Component{
           <Button color="danger" onClick={() => this.closeModal()}>Cancelar</Button>
         </ModalFooter>
       </Modal>
+
+
+      <Modal isOpen={this.state.modalEdit}>
+        <ModalHeader>
+          <div>
+            <h3>Editar Vehículo</h3>
+          </div>
+        </ModalHeader>
+
+        <ModalBody>
+          
+          <FormGroup>
+            <label>Id:</label>
+            <input className="form-control" readOnly type="text" value={this.state.form.id}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Placa:</label>
+            <input className="form-control" name="carId" type="text" onChange={this.handleChange} value={this.state.form.carId}/>
+          </FormGroup>
+
+          <FormGroup>
+            <label>GPS:</label>
+            <input className="form-control" name="idGps" type="text" onChange={this.handleChange} value={this.state.form.idGps}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Tipo de Vehículo:</label>
+            <input className="form-control" name="type" type="text" onChange={this.handleChange} value={this.state.form.type}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Velocidad límite:</label>
+            <input className="form-control" name="speedLimit" type="text" onChange={this.handleChange} value={this.state.form.speedLimit}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Estado:</label>
+            <input className="form-control" name="status" type="text" onChange={this.handleChange} value={this.state.form.status}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Foto:</label>
+            <input className="form-control" name="photoUrl" type="text" onChange={this.handleChange} value={this.state.form.photoUrl}/>
+          </FormGroup>
+          
+          <FormGroup>
+            <label>Número de activo:</label>
+            <input className="form-control" name="activeNumber" type="text" onChange={this.handleChange} value={this.state.form.activeNumber}/>
+          </FormGroup>
+
+        </ModalBody>
+
+        <ModalFooter>
+          <Button color="primary" onClick={() => this.edit(this.state.form)}>Editar</Button>
+          <Button color="danger" onClick={() => this.closeModalEdit()}>Cancelar</Button>
+        </ModalFooter>
+      </Modal>
+
+
       </>
     );
   }
